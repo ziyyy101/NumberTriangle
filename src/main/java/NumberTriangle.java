@@ -141,9 +141,6 @@ public class NumberTriangle {
         // are more convenient to work with when reading the file contents.
         InputStream inputStream = NumberTriangle.class.getClassLoader().getResourceAsStream(fname);
         BufferedReader br = new BufferedReader(new InputStreamReader(inputStream));
-
-
-        // TODO define any variables that you want to use to store things
         java.util.List<NumberTriangle> prevRow = new java.util.ArrayList<>();
 
         // will need to return the top of the NumberTriangle,
@@ -154,8 +151,6 @@ public class NumberTriangle {
         while (line != null) {
 
             // remove when done; this line is included so running starter code prints the contents of the file
-            System.out.println(line);
-            // TODO process the line
             if (!line.isEmpty()){
                 String[] parts = line.split(" ");
                 java.util.List<NumberTriangle> currRow = new java.util.ArrayList<>(parts.length);
