@@ -63,6 +63,30 @@ public class NumberTriangle {
      * Note: a NumberTriangle contains at least one value.
      */
     public void maxSumPath() {
+        if (isLeaf()){
+            return;
+        }
+        if (left != null) {
+            left.maxSumPath();
+        }
+        if (right != null) {
+            right.maxSumPath();
+        }
+        int leftsum;
+        if (left != null) {
+            leftsum = left.root;
+        }else{
+            leftsum = Integer.MIN_VALUE;
+        }
+        int rightsum;
+        if (right != null) {
+            rightsum = right.root;
+        }else{
+            rightsum = Integer.MIN_VALUE;
+        }
+        root += Math.max(leftsum, rightsum);
+        left = null;
+        right = null;
         // for fun [not for credit]:
     }
 
@@ -89,7 +113,16 @@ public class NumberTriangle {
      */
     public int retrieve(String path) {
         // TODO implement this method
-        return -1;
+        NumberTriangle curr = this;
+        for (int i = 0; i < path.length(); i++) {
+            char ch = path.charAt(i);
+            if (ch == 'l'){
+                curr = curr.left;
+            } else if (ch == 'r'){
+                curr = curr.right;
+            }
+        }
+        return curr.root;
     }
 
     /** Read in the NumberTriangle structure from a file.
@@ -111,6 +144,7 @@ public class NumberTriangle {
 
 
         // TODO define any variables that you want to use to store things
+        java.util.List<NumberTriangle> prevRow = new java.util.ArrayList<>();
 
         // will need to return the top of the NumberTriangle,
         // so might want a variable for that.
@@ -121,8 +155,25 @@ public class NumberTriangle {
 
             // remove when done; this line is included so running starter code prints the contents of the file
             System.out.println(line);
-
             // TODO process the line
+            if (!line.isEmpty()){
+                String[] parts = line.split(" ");
+                java.util.List<NumberTriangle> currRow = new java.util.ArrayList<>(parts.length);
+                for (String p:parts){
+                    int val =  Integer.parseInt(p);
+                    currRow.add(new NumberTriangle(val));
+                }
+                if (top == null) {
+                    top = currRow.get(0);
+                }
+                if (!prevRow.isEmpty()){
+                    for(int i = 0; i < prevRow.size(); i++){
+                        prevRow.get(i).setLeft(currRow.get(i));
+                        prevRow.get(i).setRight(currRow.get(i + 1));
+                    }
+                }
+                prevRow = currRow;
+            }
 
             //read the next line
             line = br.readLine();
